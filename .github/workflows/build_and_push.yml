@@ -16,7 +16,7 @@ on:
 
 env:
   # !!! 镜像名已设置为 gcli2ali !!!
-  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcli2ali
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/n2api
 
 jobs:
   build-and-push:
