@@ -1,0 +1,39 @@
+# .github/workflows/build_and_push.yml
+name: Build and Push Python Docker Image to Docker Hub (Manual Trigger)
+
+on:
+  workflow_dispatch: # 触发：仅允许手动启动
+    inputs:
+      version:
+        description: '必须提供一个版本/标签 (例如 1.0.0 或 my-test-build)'
+        required: true
+        type: string
+      update_latest:
+        description: '是否也更新 latest 标签?'
+        required: false
+        type: boolean
+        default: false # 默认不更新 latest
+
+env:
+  # !!! 镜像名已设置为 gcli2ali !!!
+  IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/gcli2ali
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 步骤 1: 检出代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 步骤 2: 登录到 Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # 步骤 3: 生成 Docker 镜像元数据 (标签和 Labels)
+      - name: Extract metadata (tags and labels) for Docker
+    
